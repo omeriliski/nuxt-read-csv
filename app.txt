@@ -1,0 +1,27 @@
+
+<script setup>
+import * as d3 from 'd3'
+import { ref, onMounted } from 'vue'
+
+const users = ref([])
+
+onMounted(async () => {
+  const response = await fetch('/users.csv')
+  const text = await response.text()
+  const dsv = d3.dsvFormat(';')
+  const data = dsv.parse(text)
+  console.log("data==>", data)
+  users.value = data
+})
+</script>
+
+
+
+<template>
+  <ul>
+    <li v-for="user in users" :key="user.id">
+      {{ user.Name }} ({{ user.Text }})
+    </li>
+  </ul>
+</template>
+
